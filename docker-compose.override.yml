@@ -1,0 +1,6 @@
+services:
+  hiveserver2:
+    environment:
+      HIVESERVER2_PID_DIR: /tmp/hiveserver2-pid
+    volumes:
+      - ./config/hive-site.xml:/hive_custom_conf/hive-site.xml:ro

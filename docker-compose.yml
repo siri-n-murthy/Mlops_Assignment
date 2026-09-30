@@ -1,0 +1,51 @@
+services:
+  namenode:
+    image: apache/hadoop:3.5.0
+    container_name: hive-namenode
+    hostname: namenode
+    user: root
+    ports:
+      - "9870:9870"
+      - "8020:8020"
+    volumes:
+      - namenode_data:/tmp/hadoop-root/dfs/name
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+    command: ["hdfs", "namenode"]
+
+  datanode:
+    image: apache/hadoop:3.5.0
+    container_name: hive-datanode
+    hostname: datanode
+    user: root
+    depends_on:
+      - namenode
+    volumes:
+      - datanode_data:/tmp/hadoop-root/dfs/data
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+    command: ["hdfs", "datanode"]
+
+  hiveserver2:
+    image: apache/hive:4.2.1
+    container_name: hive-server
+    hostname: hiveserver2
+    depends_on:
+      - namenode
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    environment:
+      SERVICE_NAME: hiveserver2
+      HIVE_CUSTOM_CONF_DIR: /hive_custom_conf
+      HIVE_SERVER2_THRIFT_PORT: "10000"
+      HIVE_SERVER2_THRIFT_BIND_HOST: "0.0.0.0"
+    volumes:
+      - ./config/core-site.xml:/hive_custom_conf/core-site.xml:ro
+      - ./config/hdfs-site.xml:/hive_custom_conf/hdfs-site.xml:ro
+      - hive_warehouse:/opt/hive/data/warehouse
+
+volumes:
+  namenode_data:
+  datanode_data:
+  hive_warehouse:

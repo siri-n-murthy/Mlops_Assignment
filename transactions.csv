@@ -1,0 +1,12 @@
+transaction_id,order_id,product_category,quantity,unit_price,total_amount
+T001,O001,Electronics,2,500,1000
+T002,O002,Clothing,3,200,600
+T003,O003,Electronics,1,800,800
+T004,O004,Groceries,5,100,500
+T005,O005,Clothing,2,300,600
+T006,O006,Electronics,,700,700
+T007,O007,,4,150,600
+T008,O008,Groceries,3,,450
+T009,O009,Clothing,2,250,500
+T010,O010,Electronics,1,1200,1200
+
